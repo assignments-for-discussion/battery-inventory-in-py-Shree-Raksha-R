@@ -1,41 +1,37 @@
-
-def count_batteries_by_health(present_capacities,b):
-  h=e=f=0
+def count_batteries_by_health(present_capacities):
+  rated_capacity = 120
+  healthy_count = 0
+  exchange_count = 0
+  failed_count = 0
+  SoH =  0 
   for i in present_capacities:
-    a=(100*i)/b
-    if a>80:
-      h=h+1
-    elif(a>=63 and a<=80):
-      e=e+1
+    SoH = 100 * int(i) / rated_capacity
+    if SoH >80 :
+      healthy_count += 1
+    elif SoH >63 and SoH <=80:
+      exchange_count +=1
     else:
-      f=f+1
+      failed_count += 1
       
-  d= {
-    "healthy": h,
-    "exchange": e,
-    "failed": f
+  return {
+    "healthy": healthy_count,
+    "exchange": exchange_count,
+    "failed": failed_count
   }
-  return(d)
 
 
 def test_bucketing_by_health():
   print("Counting batteries by SoH...\n")
-  present_capacities = []
-  while(True):
-    a=int(input("capacity(for ending enter 0):"))
-    if a==0:
-      break
-    else:
-      present_capacities.append(a)
-      continue
-  
-  b=int(input("enter rated capacity: "))
-  counts = count_batteries_by_health(present_capacities,b)
-  
-  for i in counts:
-    print(i,counts[i])
-  print("Done counting")
+  present_capacities = [115, 118, 80, 95, 91, 72]
+  counts = count_batteries_by_health(present_capacities)
+  assert(counts["healthy"] == 2)
+  assert(counts["exchange"] == 3)
+  assert(counts["failed"] == 1)
+  print("Done counting :)")
 
 
-if __name__ == '__main__':
+if _name_ == '__main__':
   test_bucketing_by_health()
+
+
+
